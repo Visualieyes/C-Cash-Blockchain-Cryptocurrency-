@@ -1,7 +1,15 @@
-all: run
+TESTCFLAGS=-g -Wall -Werror
+TESTLINKER=-lcunit
+TESTSOURCES=test.c sha1.c
+TESTBINARY=sha1test
 
-run: puzzle.h puzzle.c trnslist.h trnslist.c sha1.h sha1.c block.h block.c blockchain.h blockchain.c cCash.c
-	gcc puzzle.c trnslist.c block.c blockchain.c sha1.c cCash.c -o run
+.FORCE: test
+all:
+	make test
 
 clean:
-	@rm -f *.o run
+	rm -rf *.o $(TESTBINARY)
+
+test:
+	$(CC) $(TESTCFLAGS) -o $(TESTBINARY) $(TESTSOURCES) $(TESTLINKER)
+	./$(TESTBINARY)	
